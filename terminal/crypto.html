@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextBull Trading Dashboard</title>
+    <style>
+        /* Reset styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: column;
+            background-color: #121212;
+            color: #fff;
+        }
+
+        /* Upper navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #000000;
+        }
+        .navbar h1 {
+            font-size: 1.4rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+    width: 30px; /* Adjust the size as needed */
+    height: auto;
+    margin-right: 8px; /* Adds spacing between the logo and the text */
+}
+        .navbar .next {
+            color: #fff;
+        }
+        .navbar .bull {
+            color: #0080ff;
+            margin-left: 2px;
+        }
+        .navbar .terminal {
+            color: #ffffff;
+            margin-left: 12px;
+        }
+        .navbar .links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+          
+        }
+        .navbar .links li {
+            font-size: 1.0rem;
+            cursor: pointer;
+        }
+        .navbar .links li:hover {
+            color: #00c3ff;
+        }
+
+        /* Middle buttons */
+        .middle-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .middle-buttons a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 5px 10px;
+            background-color: #313131;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .middle-buttons a:hover {
+            background-color: #00aeff;
+        }
+
+        /* Profile icon styling */
+        .profile-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #333;
+            margin-left: -250px;
+        }
+        .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+            background-color: #000000;
+        }        
+        .sidebar ul {
+    list-style: none;
+    padding: 0;
+    width:50px;
+    background-color: #000000;
+}
+
+.sidebar ul li {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar ul li img.icon {
+    width: 28px; /* Adjust the size of the icons as needed */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.sidebar ul li img.icon:hover {
+    transform: scale(1.1); /* Add a slight zoom on hover for effect */
+}
+
+
+        /* Main container styling */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Chart area styling */
+        .chart {
+            flex: 3;
+            background-color: #202020;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+            margin-bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .tradingview-widget-container {
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+        /* Right panel styling */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .watchlist {
+            flex: 2;
+            background-color: #1e1e1e;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .watchlist h2 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+        .watchlist-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding: 5px 0;
+        }
+        .watchlist-item:hover {
+            background-color: #333;
+        }
+
+        /* Order panel styling */
+        .order-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.currency-info {
+    display: flex;
+    gap: 20px;
+}
+
+.price {
+    font-size: 16px;
+}
+
+.sell-price {
+    color: #ff6464;
+}
+
+.buy-price {
+    color: #00c781;
+}
+
+.margin-info {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sell, .buy {
+    padding: 8px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sell {
+    background-color: #ff6464;
+    color: #fff;
+}
+
+.buy {
+    background-color: #00c781;
+    color: #fff;
+}
+
+.lot-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+}
+
+.decrease, .increase {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+        /* Bottom container styling */
+        .bottom-container {
+            height: 30%;
+            background-color: #1e1e1e;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tab styling */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .tab {
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #333;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .tab.active {
+            background-color: #0080ff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar h1 {
+                font-size: 1rem;
+            }
+            .middle-buttons {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .navbar .links li {
+                font-size: 0.9rem;
+            }
+            .sidebar {
+                flex: 0 0 25%;
+            }
+            .main-container {
+                flex-direction: column;
+            }
+            .top-container {
+                flex-direction: column;
+            }
+            .chart, .right-panel {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar h1 {
+                font-size: 0.8rem;
+            }
+            .middle-buttons a {
+                font-size: 0.8rem;
+                padding: 4px 8px;
+            }
+            .sidebar {
+                display: none;
+            }
+            .order-panel button {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .bottom-container h2 {
+                font-size: 0.9rem;
+            }
+            .trade-item {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Upper Navbar -->
+    <div class="navbar">
+        <h1>
+            <img src="logo.png" alt="Logo" class="logo">
+            <span class="next">Next</span>
+            <span class="bull">Bull</span>
+            <span class="terminal">Terminal</span>
+        </h1>
+        <div class="middle-buttons">
+            <a href="stocks.html">Stocks</a>
+            <a href="crypto.html">Crypto</a>
+            <a href="forex.html">Forex</a>
+            <a href="ipo.html">IPO</a>
+            <a href="mutual_funds.html">Mutual Funds</a>
+            <a href="others.html">Others</a>
+        </div>
+        <ul class="links">
+            <li>
+                <a href="https://dashboard.nextbull.in/dashboard" class="bright-link" target="_blank">Dashboard</a>
+               
+            </li>
+        </ul>
+        
+        <div class="profile-icon">
+            <img src="profile.jpg" alt="Profile">
+        </div>
+    </div>
+
+    <!-- Main content area -->
+    <div style="display: flex; flex: 1;">
+        <div class="sidebar">
+            <h2></h2>
+            <ul>
+                <li><a href="file1.html"><img src="1.png" alt="Icon 1" class="icon"></a></li>
+<li><a href="file2.html"><img src="2.png" alt="Icon 2" class="icon"></a></li>
+<li><a href="file3.html"><img src="3.png" alt="Icon 3" class="icon"></a></li>
+<li><a href="https://analytics.nextbull.in/" target="_blank"><img src="4.png" alt="Icon 4" class="icon"></a></li>
+<li><a href="file5.html"><img src="5.png" alt="Icon 5" class="icon"></a></li>
+<li><a href="file6.html"><img src="6.png" alt="Icon 6" class="icon"></a></li>
+<li><a href="file7.html"><img src="7.png" alt="Icon 7" class="icon"></a></li>
+
+            </ul>
+        </div>
+        
+
+        <div class="main-container">
+            <!-- Top section with chart and right panel -->
+            <div class="top-container">
+                <!-- Chart area (TradingView widget goes here) -->
+                <div class="chart">
+                    <div class="tradingview-widget-container">
+                        <div id="tradingview_12345"></div>
+                    </div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                    <script type="text/javascript">
+                        new TradingView.widget({
+                            "width": "100%",
+                            "height": "100%",
+                            "symbol": "NASDAQ:AAPL",
+                            "interval": "D",
+                            "timezone": "Etc/UTC",
+                            "theme": "light",
+                            "style": "1",
+                            "locale": "en",
+                            "toolbar_bg": "#f1f3f6",
+                            "enable_publishing": false,
+                            "hide_top_toolbar": false,
+                            "save_image": false,
+                            "container_id": "tradingview_12345"
+                        });
+                    </script>
+                </div>
+
+                <!-- Right panel with watchlist and order buttons -->
+                <div class="right-panel">
+                    <div class="watchlist">
+                        <h2>Watchlist</h2>
+                        <div class="watchlist">
+                            <div class="watchlist-item">
+                                <span>BTC</span>
+                                <span>$50,000</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>ETH</span>
+                                <span>$3,000</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>ADA</span>
+                                <span>$2.50</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>DOT</span>
+                                <span>$40.00</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>XRP</span>
+                                <span>$1.10</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>LTC</span>
+                                <span>$180.00</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>UNI</span>
+                                <span>$25.00</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>SOL</span>
+                                <span>$150.00</span>
+                            </div>
+                            <div class="watchlist-item">
+                                <span>BNB</span>
+                                <span>$400.00</span>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                    </div>
+                    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Panel</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link your CSS file here -->
+</head>
+<body>
+    <div class="order-panel">
+        <div class="currency-info">
+            <span class="price sell-price"></span>
+            <span class="price buy-price"></span>
+        </div>
+        <div class="margin-info">
+            Margin: $6.52 
+        </div>
+        <div class="controls">
+            <button class="sell">Sell</button>
+            <div class="lot-control">
+                <button class="decrease">-</button>
+                <span class="lot-size">0.01</span>
+                <button class="increase">+</button>
+                <div class="lot-label">lots</div>
+            </div>
+            <button class="buy">Buy</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript goes here
+        document.querySelector(".decrease").addEventListener("click", () => {
+            const lotSizeElement = document.querySelector(".lot-size");
+            let lotSize = parseFloat(lotSizeElement.innerText);
+            if (lotSize > 0.01) {
+                lotSize -= 0.01;
+                lotSizeElement.innerText = lotSize.toFixed(2);
+            }
+        });
+
+        document.querySelector(".increase").addEventListener("click", () => {
+            const lotSizeElement = document.querySelector(".lot-size");
+            let lotSize = parseFloat(lotSizeElement.innerText);
+            lotSize += 0.01;
+            lotSizeElement.innerText = lotSize.toFixed(2);
+        });
+
+        document.querySelector(".sell").addEventListener("click", () => {
+            alert("Sell button clicked! Implement sell functionality here.");
+        });
+
+        document.querySelector(".buy").addEventListener("click", () => {
+            alert("Buy button clicked! Implement buy functionality here.");
+        });
+    </script>
+</body>
+</html>
+
+                    
+                </div>
+            </div>
+
+            <!-- Bottom container with Order and Positions tabs -->
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Interface</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+           
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #222;
+            font-size: 13px;
+        }
+        .tab-bar {
+            display: flex;
+            background-color: #222;
+            padding: 5px 20px;
+            font-size: 11px;
+        }
+        .tab-bar div {
+            margin-right: 20px;
+            padding: 9px;
+            color: #888;
+            cursor: pointer;
+        }
+        .tab-bar .active {
+            color: #fff;
+            border-bottom: 2px solid #fff;
+        }
+        .table-container {
+            padding: 20px;
+            display: none;
+        }
+        .table-container.active {
+            display: block;
+        }
+        .position-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #888;
+            font-size: 14px;
+        }
+        .position-table th, .position-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        .no-positions {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section for Balance, Profit & Loss, Equity, etc. -->
+    <div class="header">
+        <div>BALANCE $96,030.68</div>
+        <div>PROFIT & LOSS $0.00</div>
+        <div>EQUITY $96,030.68</div>
+        <div>MARGIN USED $0.00</div>
+        <div>MARGIN AVAILABLE $96,030.68</div>
+        <div>MARGIN LEVEL 0.00%</div>
+    </div>
+
+    <!-- Tab Bar for Positions, Pending, Closed Positions -->
+    
+
+    <!-- Table Containers for Each Tab -->
+    <div id="positions" class="table-container active">
+        <table class="position-table">
+            <thead>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Side</th>
+                    <th>Size</th>
+                    <th>Entry / Market</th>
+                    <th>Stop Loss</th>
+                    <th>Take Profit</th>
+                    <th>Margin</th>
+                    <th>Exposure</th>
+                    <th>Created At (EET)</th>
+                    <th>Fee</th>
+                    <th>Swaps</th>
+                    <th>Profit & Loss</th>
+                    <th>Position ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="13" class="no-positions">No open positions</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="pending" class="table-container">
+        <table class="position-table">
+            <thead>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Side</th>
+                    <th>Size</th>
+                    <th>Entry / Market</th>
+                    <th>Stop Loss</th>
+                    <th>Take Profit</th>
+                    <th>Margin</th>
+                    <th>Exposure</th>
+                    <th>Created At (EET)</th>
+                    <th>Fee</th>
+                    <th>Swaps</th>
+                    <th>Profit & Loss</th>
+                    <th>Position ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="13" class="no-positions">No open positions</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="closed" class="table-container">
+        <table class="position-table">
+            <thead>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Side</th>
+                    <th>Size</th>
+                    <th>Entry / Market</th>
+                    <th>Stop Loss</th>
+                    <th>Take Profit</th>
+                    <th>Margin</th>
+                    <th>Exposure</th>
+                    <th>Created At (EET)</th>
+                    <th>Fee</th>
+                    <th>Swaps</th>
+                    <th>Profit & Loss</th>
+                    <th>Position ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="13" class="no-positions">No open positions</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            // Remove 'active' class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            // Add 'active' class to the clicked tab
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            
+            // Hide all table containers
+            document.querySelectorAll('.table-container').forEach(container => container.classList.remove('active'));
+            // Show the selected table container
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
+
+
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
